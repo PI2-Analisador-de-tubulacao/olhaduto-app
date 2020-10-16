@@ -1,17 +1,16 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[Feature] "
+title: '[Feature] '
 labels: development
 assignees: ''
-
 ---
 
 **RF01** - Controlar o deslocamento do robô
 
 #### _**Tasks**_
 
-- [ ]  Conectar o robô
+- [ ] Conectar o robô
 
 - [ ] Movimentar plataforma
 
@@ -19,10 +18,10 @@ assignees: ''
 
 #### **Critérios de Aceitação**
 
-- [ ]  A plataforma deve se movimentar
-- [ ]  Deve existir um atalho no teclado
+- [ ] A plataforma deve se movimentar
+- [ ] Deve existir um atalho no teclado
 
 **Pontos:** 5
-**Prioridade:** MUST 
+**Prioridade:** MUST
 
 **Responsáveis:** Vinícius
