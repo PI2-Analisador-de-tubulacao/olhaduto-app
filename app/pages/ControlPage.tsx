@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import ControlPageWrapper from './styles';
+import routes from '../constants/routes.json';
+import Prediction from '../components/control/Prediction';
 import Logo from '../../resources/images/olha_duto_logo.svg';
 import NavigationButton from '../components/control/ButtonNavigation';
 import BrightnessButton from '../components/control/BrightnessButton';
-import ControlPageWrapper from './styles';
-import Prediction from '../components/control/Prediction';
 
 export default function ControlPage() {
   return (
@@ -35,11 +38,15 @@ export default function ControlPage() {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'space-evenly',
           marginBottom: '16px',
+          alignItems: 'center',
         }}
       >
         <BrightnessButton />
+        <Link to={routes.HOME}>
+          <Button color="primary">Sair</Button>
+        </Link>
       </div>
     </ControlPageWrapper>
   );
