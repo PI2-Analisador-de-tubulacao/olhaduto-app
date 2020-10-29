@@ -1,3 +1,10 @@
+# Home files
+.bash_history
+.cache/
+.config/
+.pki/
+.yarnrc
+
 # Logs
 logs
 *.log
