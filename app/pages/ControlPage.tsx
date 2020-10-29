@@ -19,7 +19,7 @@ export default function ControlPage() {
           justifyContent: 'space-around',
         }}
       >
-        <img width="62%" src={CrackExample} alt="crack-example" />
+        <Prediction />
         <div
           style={{
             display: 'flex',

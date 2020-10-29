@@ -16,7 +16,7 @@ class Prediction extends React.Component {
   }
 
   componentDidMount = async () => {
-    const cracksSegModel = await loadGraphModel('http://localhost:3000/unet_js_v1/model.json')
+    const cracksSegModel = await loadGraphModel('../resources/unet_js/model.json')
 		this.setState({model: cracksSegModel});
   }
 
@@ -62,12 +62,12 @@ class Prediction extends React.Component {
 	}
 
   arrayToImg = (arr, imgHeight, imgWidth) => {
-var canvas = document.createElement("canvas");
+    var canvas = document.createElement("canvas");
     var ctx = canvas.getContext("2d");
 
     // size the canvas to your desired image
-    canvas.width = imgWidth;
-    canvas.height = imgHeight;
+    canvas.width = IMG_WIDTH;
+    canvas.height = IMG_HEIGHT;
 
     // get the imageData and pixel array fr
     var imgData = ctx.getImageData(0, 0, IMG_WIDTH, IMG_HEIGHT);
@@ -76,8 +76,8 @@ var canvas = document.createElement("canvas");
     // manipulate some pixel elements
     var ix = 0
     for (var i = 0; i < IMG_WIDTH*IMG_HEIGHT*4; i += 4) {
-        data[i + 1] = Math.round(arr[ix]*255.0); // set every red pixel element to 255
-        data[i + 3] = 255; // make this pixel opaque
+        imgData.data[i + 1] = Math.round(arr[ix]*255.0); // set every red pixel element to 255
+        imgData.data[i + 3] = 255; // make this pixel opaque
         ix++;
     }
 
@@ -89,9 +89,15 @@ var canvas = document.createElement("canvas");
 
     // set the img.src to the canvas data url
     image.src = canvas.toDataURL();
+    image.height = imgHeight;
+    image.width = imgWidth;
+    image.style.opacity = .5;
+    image.style.position = "absolute";
+    image.style.top = "30%";
+    image.style.left = "30%";
 
     // append the new img object to the page
-    var div = document.getElementById("predictedImage");
+    var div = document.getElementById("imageDiv");
     div.appendChild(image)
 
   }
@@ -106,16 +112,12 @@ var canvas = document.createElement("canvas");
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(myImage, 0, 0);
 
-		var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-		data = this.removeAlphaChannel(data.data);
-    data = this.reshape(data)		
-    //data = this.normalize(data)		
-		console.log('data', data);
-    //await tf.setBackend('wasm')
-    //await tf.ready();
-    var a = this.state.model.executeAsync(tf.tensor([data]))
-    a.then((o) => {o.data().then((d) => {console.log('ddd', d);this.arrayToImg(d, myImage.height, myImage.width)})})
-    //this.state.model.executeAsync(tf.tensor([data, data, data]))
+    var data = tf.browser.fromPixels(myImage)
+    var tensor = tf.image.resizeBilinear(data, [448, 448]); // 192,192 
+    tensor = tensor.reshape([1, 448, 448, 3]).div(tf.scalar(255))
+    
+    var prediction = this.state.model.executeAsync(tensor)
+    prediction.then((p) => {p.data().then((predData) => {this.arrayToImg(predData, myImage.height, myImage.width)})})
 
 	}
 
@@ -131,10 +133,9 @@ var canvas = document.createElement("canvas");
   render() {
 		console.log(this.state.model);
     return (
-      <div className="App" >
-        <h1>Choose an image to identify the presence of crack on it</h1>
+      <div className="App" id="imageDiv" >
         <input className="input" type='file' onChange={this.handleUpload} />
-        <img id="crack_image" className="image" src={this.state.image} />
+        <img id="crack_image" style={{"position": "absolute", "top": "30%", "left": "30%"}} src={this.state.image} />
 				<button onClick={this.predict}>Predict</button>
         <div id="predictedImage" />
       </div>
