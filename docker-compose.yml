@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  olhaduto-desktop:
+    build:
+      context: .
+    image: olhaduto
+    container_name: olhaduto
+    user: olhaduto
+    volumes:
+      - ${HOME}/.Xauthority:/tmp/.Xauthority
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - .:/home/olhaduto/
+    environment:
+      - DISPLAY
+      - XAUTHORITY=/tmp/.Xauthority
+    network_mode: host
+    tty: true
+    stdin_open: true
+    privileged: true
+    command: bash -c "yarnpkg && yarnpkg dev"
