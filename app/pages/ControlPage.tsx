@@ -4,6 +4,7 @@ import CrackExample from '../../resources/images/crack_example.svg';
 import NavigationButton from '../components/control/ButtonNavigation';
 import BrightnessButton from '../components/control/BrightnessButton';
 import ControlPageWrapper from './styles';
+import Prediction from '../components/control/Prediction.tsx';
 
 export default function ControlPage() {
   return (
