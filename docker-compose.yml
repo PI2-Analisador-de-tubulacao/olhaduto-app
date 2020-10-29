@@ -18,4 +18,4 @@ services:
     tty: true
     stdin_open: true
     privileged: true
-    command: bash -c "yarnpkg && yarnpkg dev"
+    command: bash -c ". /opt/ros/foxy/setup.sh && yarnpkg && yarnpkg dev"

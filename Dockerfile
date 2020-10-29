@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ros:foxy-ros-base
 
 env DEBIAN_FRONTEND noninteractive
 
