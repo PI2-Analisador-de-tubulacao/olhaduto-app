@@ -1,10 +1,9 @@
 import React from 'react';
 import Logo from '../../resources/images/olha_duto_logo.svg';
-import CrackExample from '../../resources/images/crack_example.svg';
 import NavigationButton from '../components/control/ButtonNavigation';
 import BrightnessButton from '../components/control/BrightnessButton';
 import ControlPageWrapper from './styles';
-import Prediction from '../components/control/Prediction.tsx';
+import Prediction from '../components/control/Prediction';
 
 export default function ControlPage() {
   return (
@@ -25,6 +24,8 @@ export default function ControlPage() {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
+            alignItems: 'center',
+            flexBasis: '20%',
           }}
         >
           <NavigationButton name="CÂMERA" buttonRadius={140} />
