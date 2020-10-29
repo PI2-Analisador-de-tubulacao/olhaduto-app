@@ -136,7 +136,7 @@ class Prediction extends React.Component {
       <div className="App" id="imageDiv" >
         <input className="input" type='file' onChange={this.handleUpload} />
         <img id="crack_image" style={{"position": "absolute", "top": "30%", "left": "30%"}} src={this.state.image} />
-				<button onClick={this.predict}>Predict</button>
+				<button onClick={this.predict}>Predizer falha</button>
         <div id="predictedImage" />
       </div>
     );
