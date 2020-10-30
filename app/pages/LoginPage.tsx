@@ -1,13 +1,14 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom'; // <--- import `withRouter`. We will use this in the bottom of our file.
+import { withRouter } from 'react-router-dom';
 import '../styles/pages/LoginPage.css';
+import PropTypes from 'prop-types';
 import logoImg from '../../resources/Logo.svg';
 
 class LoginPage extends React.Component {
   handleSubmit = (e) => {
     const { history } = this.props;
     e.preventDefault();
-    history.push('/control');
+    history.push('/home');
   };
 
   render() {
