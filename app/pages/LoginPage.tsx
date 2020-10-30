@@ -1,24 +1,22 @@
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
-
+import { withRouter } from 'react-router-dom'; // <--- import `withRouter`. We will use this in the bottom of our file.
 import '../styles/pages/LoginPage.css';
 import logoImg from '../../resources/Logo.svg';
 
-const handleSubmit = () => {
-  console.log('submit clicado');
-};
+class LoginPage extends React.Component {
+	handleSubmit = (e) => {
+		e.preventDefault();
+		this.props.history.push('/counter');
+	};
 
-export default function LoginPage() {
+	render() {
   return (
-    /*     <form>
-      <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-      <Button color="primary">Hello</Button>
-    </form> */
     <main>
       <header>
         <img src={logoImg} alt="logo" />
       </header>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={this.handleSubmit}>
         <fieldset className="input-form">
           <input type="text" id="email-form" name="Email" placeholder="Email" />
           <input
@@ -38,4 +36,7 @@ export default function LoginPage() {
       </form>
     </main>
   );
+	}
 }
+
+export default withRouter(LoginPage);
