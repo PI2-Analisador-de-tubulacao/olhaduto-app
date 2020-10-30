@@ -5,6 +5,8 @@
 .pki/
 .yarnrc
 
+.electron-gyp/
+
 # Logs
 logs
 *.log
