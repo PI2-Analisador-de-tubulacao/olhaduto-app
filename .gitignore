@@ -4,6 +4,8 @@
 .config/
 .pki/
 .yarnrc
+.viminfo
+.bashrc
 
 .electron-gyp/
 

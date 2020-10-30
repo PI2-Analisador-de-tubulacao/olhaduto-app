@@ -15,8 +15,9 @@ services:
     environment:
       - DISPLAY
       - XAUTHORITY=/tmp/.Xauthority
+      - NODE_ENV=development
     network_mode: host
     tty: true
     stdin_open: true
     privileged: true
-    command: /bin/bash -c "yarnpkg && yarnpkg dev"
+    command: /bin/bash -c "yarn && yarn dev"

@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI
 
 on:
   push:
@@ -8,16 +8,22 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v2
       - name: Build and Run
         run: |
-          docker-compose up -d --build
+          docker-compose run -u root olhaduto-desktop chown olhaduto:olhaduto . -R
+          docker-compose up -d
+
+      - name: Show status
+        run: |
+          ls -la
+          docker-compose ps -a
+
       - name: Run checkings
         run: |
-          docker-compose exec -T olhaduto-desktop yarnpkg prestart
-          docker-compose exec -T olhaduto-desktop yarnpkg test
-          docker-compose exec -T olhaduto-desktop yarnpkg lint
-          docker-compose exec -T olhaduto-desktop yarnpkg lint-styles
+          docker-compose exec -T olhaduto-desktop yarn prestart
+          docker-compose exec -T olhaduto-desktop yarn test
+          docker-compose exec -T olhaduto-desktop yarn lint
+          docker-compose exec -T olhaduto-desktop yarn lint-styles
