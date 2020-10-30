@@ -33,7 +33,7 @@ export default function HomePage() {
           width: '50%',
         }}
       >
-        <Link to={routes.CONTROL}>
+        <Link to={routes.CONTROL} style={{ width: '100%' }}>
           <BlueButton>Iniciar Inspeção</BlueButton>
         </Link>
         <BlueButton>Histórico</BlueButton>
@@ -48,7 +48,7 @@ export default function HomePage() {
           width: '100%',
         }}
       >
-        <Link to={routes.HOME}>
+        <Link to={routes.LOGIN}>
           <Button color="primary">Sair</Button>
         </Link>
       </div>
