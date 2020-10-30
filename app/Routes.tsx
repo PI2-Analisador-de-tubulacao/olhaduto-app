@@ -9,6 +9,8 @@ const LazyCounterPage = React.lazy(() => import('./containers/CounterPage'));
 
 const LazyControlPage = React.lazy(() => import('./pages/ControlPage'));
 
+const LazyLoginPage = React.lazy(() => import('./pages/LoginPage'));
+
 const CounterPage = (props: Record<string, any>) => (
   <React.Suspense fallback={<h1>Loading...</h1>}>
     <LazyCounterPage {...props} />
@@ -21,6 +23,12 @@ const ControlPage = (props: Record<string, any>) => (
   </React.Suspense>
 );
 
+const LoginPage = (props: Record<string, any>) => (
+  <React.Suspense fallback={<h1>Loading...</h1>}>
+    <LazyLoginPage {...props} />
+  </React.Suspense>
+);
+
 export default function Routes() {
   return (
     <App>
@@ -28,6 +36,7 @@ export default function Routes() {
         <Route path={routes.COUNTER} component={CounterPage} />
         <Route path={routes.CONTROL} component={ControlPage} />
         <Route path={routes.HOME} component={HomePage} />
+        <Route path={routes.LOGIN} component={LoginPage} />
       </Switch>
     </App>
   );
