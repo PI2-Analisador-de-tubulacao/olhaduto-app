@@ -1,13 +1,13 @@
 import React from 'react';
-import { Button, TextField } from '@material-ui/core';
 import { withRouter } from 'react-router-dom'; // <--- import `withRouter`. We will use this in the bottom of our file.
 import '../styles/pages/LoginPage.css';
 import logoImg from '../../resources/Logo.svg';
 
 class LoginPage extends React.Component {
   handleSubmit = (e) => {
+    const { history } = this.props;
     e.preventDefault();
-    this.props.history.push('/control');
+    history.push('/control');
   };
 
   render() {
@@ -44,4 +44,9 @@ class LoginPage extends React.Component {
   }
 }
 
+LoginPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 export default withRouter(LoginPage);

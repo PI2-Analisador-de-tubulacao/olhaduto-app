@@ -5,7 +5,6 @@ import routes from './constants/routes.json';
 import App from './containers/App';
 import HomePage from './containers/HomePage';
 
-
 const LazyCounterPage = React.lazy(() => import('./containers/CounterPage'));
 
 const LazyControlPage = React.lazy(() => import('./pages/ControlPage'));
@@ -21,7 +20,7 @@ const CounterPage = (props: Record<string, any>) => (
 const ControlPage = (props: Record<string, any>) => (
   <React.Suspense fallback={<h1>Loading...</h1>}>
     <LazyControlPage {...props} />
-	</React.Suspense>
+  </React.Suspense>
 );
 
 const LoginPage = (props: Record<string, any>) => (
