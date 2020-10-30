@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build and Run
+      run: |
+        docker-compose up -d --build
+    - name: Run checkings
+      run: |
+        docker-compose exec olhaduto-desktop yarnpkg prestart
+        docker-compose exec olhaduto-desktop yarnpkg test
+        docker-compose exec olhaduto-desktop yarnpkg lint
+        docker-compose exec olhaduto-desktop yarnpkg lint-styles
+      
