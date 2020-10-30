@@ -7,6 +7,7 @@ services:
     image: olhaduto
     container_name: olhaduto
     user: olhaduto
+    entrypoint: scripts/docker_entrypoint.sh
     volumes:
       - ${HOME}/.Xauthority:/tmp/.Xauthority
       - /tmp/.X11-unix:/tmp/.X11-unix
@@ -18,4 +19,4 @@ services:
     tty: true
     stdin_open: true
     privileged: true
-    command: bash -c "yarnpkg && yarnpkg dev"
+    command: /bin/bash -c "yarnpkg && yarnpkg dev"
