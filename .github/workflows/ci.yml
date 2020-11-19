@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      - uses: actions/checkout@v2
       - name: Build and Run
         run: |
           docker-compose run -u root olhaduto-desktop chown olhaduto:olhaduto . -R
