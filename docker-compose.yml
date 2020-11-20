@@ -4,20 +4,28 @@ services:
   olhaduto-desktop:
     build:
       context: .
+      dockerfile: Dockerfile
     image: olhaduto
+    entrypoint: scripts/docker_entrypoint.sh
     container_name: olhaduto
     user: olhaduto
-    entrypoint: scripts/docker_entrypoint.sh
     volumes:
       - ${HOME}/.Xauthority:/tmp/.Xauthority
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - .:/home/olhaduto/
     environment:
       - DISPLAY
       - XAUTHORITY=/tmp/.Xauthority
       - NODE_ENV=development
+    depends_on:
+      - base
     network_mode: host
     tty: true
     stdin_open: true
     privileged: true
     command: /bin/bash -c "yarn && yarn dev"
+
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    image: olhaduto_base

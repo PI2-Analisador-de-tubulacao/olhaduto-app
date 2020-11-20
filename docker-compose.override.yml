@@ -1,0 +1,5 @@
+services:
+  olhaduto-desktop:
+    image: olhaduto_base
+    volumes:
+      - .:/home/olhaduto/
