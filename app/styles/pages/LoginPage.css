@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Roboto, sans-serif;
+}
+
+main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header img {
+  width: 30em;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 100px;
+}
+
+form input {
+  border-radius: 20px;
+  margin-bottom: 10px;
+  padding: 5px 75px;
+  justify-content: center;
+}
+
+fieldset {
+  display: flex;
+  border: 0;
+  justify-content: center;
+  align-self: center;
+}
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttons-form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  background-color: #c4c4c4;
+  border: 0;
+  text-align: center;
+  font-size: 20px;
+}
+
+input::placeholder {
+  color: #fff;
+}
+input[type='submit'] {
+  padding: 6px 20px;
+  margin: 10px;
+  color: #fff;
+}
+
+input[value='LOGIN'] {
+  background-color: #44d9e6;
+}
+
+input[value='CADASTRAR'] {
+  background-color: #fff;
+  color: #44d9e6;
+}
+
+a {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  color: #44d9e6;
+}

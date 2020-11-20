@@ -6,7 +6,13 @@
 
 ### Building and Launching (Docker)
 
-Simply run:
+## Model
+
+First, download the Deep Learning model from [here](https://drive.google.com/file/d/1Avpujsj9DdBQHZzhZjv2P9wtba67A8ih/view?usp=sharing).
+
+Unzip the directory `unet_js` in the `resources` directory.
+
+After that, simply run:
 
 ```bash
 $ sudo docker-compose up
