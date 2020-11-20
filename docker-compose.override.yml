@@ -3,3 +3,4 @@ services:
     image: olhaduto_base
     volumes:
       - .:/home/olhaduto/
+    command: /bin/bash -l -c "yarn && yarn dev"

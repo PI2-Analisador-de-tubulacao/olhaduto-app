@@ -15,15 +15,9 @@ jobs:
       - name: Build and Run
         run: |
           docker-compose -f docker-compose.yml up -d
-
-      - name: Show status
-        run: |
-          ls -la
-          docker-compose ps -a
+          docker-compose -f docker-compose.yml exec -T olhaduto-desktop bash -l -c 'yarn'
+          docker-compose -f docker-compose.yml exec -d -T olhaduto-desktop bash -l -c 'yarn dev'
 
       - name: Run checkings
         run: |
-          docker-compose -f docker-compose.yml exec -T olhaduto-desktop yarn prestart
-          docker-compose -f docker-compose.yml exec -T olhaduto-desktop yarn test
-          docker-compose -f docker-compose.yml exec -T olhaduto-desktop yarn lint
-          docker-compose -f docker-compose.yml exec -T olhaduto-desktop yarn lint-styles
+          docker-compose -f docker-compose.yml exec -T olhaduto-desktop bash -l -c 'yarn test-all'

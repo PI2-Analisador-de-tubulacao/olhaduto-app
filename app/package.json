@@ -15,6 +15,5 @@
   },
   "license": "MIT",
   "dependencies": {
-    "rclnodejs": "^0.16.0"
   }
 }

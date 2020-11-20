@@ -6,7 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     image: olhaduto
-    entrypoint: scripts/docker_entrypoint.sh
     container_name: olhaduto
     user: olhaduto
     volumes:
@@ -22,7 +21,7 @@ services:
     tty: true
     stdin_open: true
     privileged: true
-    command: /bin/bash -c "yarn && yarn dev"
+    command: /bin/bash
 
   base:
     build:
