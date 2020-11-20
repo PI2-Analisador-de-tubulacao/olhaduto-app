@@ -31,8 +31,8 @@ class Prediction extends React.Component {
     const cracksSegModel = await loadGraphModel(
       '../resources/unet_js/model.json'
     );
-    node.subscribe(() => {
-      component.streamVideo(message.data, message.height, message.width);
+    node.subscribe((message) => {
+      this.streamVideo(message.data, message.height, message.width);
     });
     this.setState({ model: cracksSegModel });
   };
