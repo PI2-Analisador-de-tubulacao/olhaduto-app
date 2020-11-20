@@ -1,4 +1,5 @@
 import React from 'react';
+import ROSLIB from 'roslib';
 import './Prediction.css';
 import * as tf from '@tensorflow/tfjs';
 import { loadGraphModel } from '@tensorflow/tfjs-converter';
@@ -10,16 +11,57 @@ const IMG_HEIGHT = 448;
 class Prediction extends React.Component {
   constructor(props) {
     super(props);
+    this.ros = new ROSLIB.Ros({ encoding: 'ascii' });
+    this.ros.connect('ws://localhost:9090');
+
+    const node = new ROSLIB.Topic({
+      ros: this.ros,
+      name: '/image/image_raw',
+      messageType: 'sensor_msgs/Image',
+    });
+
     this.state = {
       image: 'http://placehold.it/180',
+      node,
     };
   }
 
   componentDidMount = async () => {
+    const { node } = this.state;
     const cracksSegModel = await loadGraphModel(
       '../resources/unet_js/model.json'
     );
+    node.subscribe(() => {
+      component.streamVideo(message.data, message.height, message.width);
+    });
     this.setState({ model: cracksSegModel });
+  };
+
+  streamVideo = (array, imgHeight, imgWidth) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = imgWidth;
+    canvas.height = imgHeight;
+
+    // get the imageData and pixel array fr
+    const imgData = ctx.getImageData(0, 0, imgWidth, imgHeight);
+
+    let ix = 0;
+    for (let i = 0; i < imgHeight * imgWidth * 3; i += 3) {
+      imgData.data[ix] = array[i];
+      imgData.data[ix + 1] = array[i + 1];
+      imgData.data[ix + 2] = array[i + 2];
+      imgData.data[ix + 3] = 255;
+      ix += 4;
+    }
+    ctx.putImageData(imgData, 0, 0);
+
+    const image = document.getElementById('crack_image');
+
+    image.src = canvas.toDataURL();
+    image.height = imgHeight;
+    image.width = imgWidth;
   };
 
   arrayToImg = (arr, imgHeight, imgWidth) => {
@@ -53,10 +95,10 @@ class Prediction extends React.Component {
     image.id = 'predictedImage';
     image.height = imgHeight;
     image.width = imgWidth;
-    image.style.opacity = 0.5;
     image.style.position = 'absolute';
     image.style.top = '0';
     image.style.left = '0';
+    image.style.opacity = 0.5;
 
     // append the new img object to the page
     const div = document.getElementById('images');
@@ -79,12 +121,12 @@ class Prediction extends React.Component {
             this.arrayToImg(predData, myImage.height, myImage.width);
             return null;
           })
-          .catch((e) => {
+          .catch(() => {
             return null;
           });
         return null;
       })
-      .catch((e) => {
+      .catch(() => {
         return null;
       });
   };
