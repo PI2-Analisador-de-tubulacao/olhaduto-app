@@ -3,7 +3,9 @@ import ROSLIB from 'roslib';
 import './Prediction.css';
 import * as tf from '@tensorflow/tfjs';
 import { loadGraphModel } from '@tensorflow/tfjs-converter';
-import Button from '@material-ui/core/Button';
+import { Button, Dialog } from '@material-ui/core';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const IMG_WIDTH = 448;
 const IMG_HEIGHT = 448;
@@ -22,6 +24,8 @@ class Prediction extends React.Component {
 
     this.state = {
       image: 'http://placehold.it/180',
+      imageToPredict: null,
+      isModalOpen: false,
       node,
     };
   }
@@ -37,6 +41,10 @@ class Prediction extends React.Component {
     this.setState({ model: cracksSegModel });
   };
 
+  handleClose = () => {
+    this.setState({ isModalOpen: false });
+  };
+
   streamVideo = (array, imgHeight, imgWidth) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -44,7 +52,6 @@ class Prediction extends React.Component {
     canvas.width = imgWidth;
     canvas.height = imgHeight;
 
-    // get the imageData and pixel array fr
     const imgData = ctx.getImageData(0, 0, imgWidth, imgHeight);
 
     let ix = 0;
@@ -101,12 +108,14 @@ class Prediction extends React.Component {
     image.style.opacity = 0.5;
 
     // append the new img object to the page
-    const div = document.getElementById('images');
+    const div = document.getElementById('predictionArea');
     div.appendChild(image);
   };
 
   preprocessImage = async () => {
     const myImage = document.getElementById('crack_image');
+
+    this.setState({ isModalOpen: true, imageToPredict: myImage.src });
 
     const data = tf.browser.fromPixels(myImage);
     let tensor = tf.image.resizeBilinear(data, [448, 448]); // 192,192
@@ -142,13 +151,8 @@ class Prediction extends React.Component {
     }
   };
 
-  handleUpload = (event) => {
-    this.removeLastImage();
-    this.setState({ image: URL.createObjectURL(event.target.files[0]) });
-  };
-
   render() {
-    const { image } = this.state;
+    const { image, isModalOpen, imageToPredict } = this.state;
     return (
       <div
         id="imageDiv"
@@ -160,14 +164,6 @@ class Prediction extends React.Component {
           justifyContent: 'space-around',
         }}
       >
-        <Button variant="contained" component="label">
-          Upload File
-          <input
-            type="file"
-            style={{ display: 'none' }}
-            onChange={this.handleUpload}
-          />
-        </Button>
         <div id="images" style={{ position: 'relative' }}>
           <img
             style={{ maxWidth: '500px' }}
@@ -179,6 +175,18 @@ class Prediction extends React.Component {
         <Button variant="contained" color="primary" onClick={this.predict}>
           Predizer Falha
         </Button>
+        <Dialog
+          open={isModalOpen}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Predição</DialogTitle>
+          <DialogContent>
+            <div id="predictionArea" style={{ position: 'relative' }}>
+              <img src={imageToPredict} alt="selected" />
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
