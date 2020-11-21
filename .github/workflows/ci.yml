@@ -15,8 +15,6 @@ jobs:
       - name: Build and Run
         run: |
           docker-compose -f docker-compose.yml up -d
-          docker-compose -f docker-compose.yml exec -T olhaduto-desktop bash -l -c 'yarn'
-          docker-compose -f docker-compose.yml exec -d -T olhaduto-desktop bash -l -c 'yarn dev'
 
       - name: Run checkings
         run: |

@@ -21,7 +21,6 @@ services:
     tty: true
     stdin_open: true
     privileged: true
-    command: /bin/bash
 
   base:
     build:
