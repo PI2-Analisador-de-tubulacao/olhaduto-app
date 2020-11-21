@@ -16,6 +16,10 @@ RUN apt update -y \
     && useradd -m -s /bin/bash -p olhaduto olhaduto \
     && npm install -g yarn@1.22.5 \
     && apt clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone https://github.com/PI2-Analisador-de-tubulacao/ros2-web-bridge \
+    && . /opt/ros/foxy/setup.sh \
+    && cd ros2-web-bridge \
+    && yarn
 
 WORKDIR /home/olhaduto
