@@ -1,19 +1,8 @@
-FROM ros:foxy-ros-base
+FROM olhaduto_base
 
-env DEBIAN_FRONTEND noninteractive
+COPY --chown=olhaduto . .
 
-RUN apt update -y \
-    && apt install -y \
-        nodejs \
-        yarnpkg \
-        npm \
-        chromium-browser \
-        libnss3 \
-        libxss1 \
-        npm \
-        libgdk-pixbuf2.0-0 \
-        libgtk-3-0 \
-        libasound2 \
-    && useradd -m -s /bin/bash -p olhaduto olhaduto
+RUN . /opt/ros/foxy/setup.sh \
+  && yarn
 
-WORKDIR /home/olhaduto
+CMD /bin/bash -l -c "yarn start"

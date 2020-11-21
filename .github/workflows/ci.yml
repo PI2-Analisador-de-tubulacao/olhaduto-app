@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and Run
+        run: |
+          docker-compose -f docker-compose.yml up -d
+
+      - name: Run checkings
+        run: |
+          docker-compose -f docker-compose.yml exec -T olhaduto-desktop bash -l -c 'yarn test-all'
