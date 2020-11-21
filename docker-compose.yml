@@ -22,6 +22,7 @@ services:
     tty: true
     stdin_open: true
     privileged: true
+    command: /bin/bash -l -c "yarn start"
 
   base:
     build:
