@@ -8,6 +8,7 @@ services:
     image: olhaduto
     container_name: olhaduto
     user: olhaduto
+    entrypoint: scripts/entrypoint.sh
     volumes:
       - ${HOME}/.Xauthority:/tmp/.Xauthority
       - /tmp/.X11-unix:/tmp/.X11-unix
@@ -21,6 +22,7 @@ services:
     tty: true
     stdin_open: true
     privileged: true
+    command: /bin/bash -l -c "yarn start"
 
   base:
     build:
