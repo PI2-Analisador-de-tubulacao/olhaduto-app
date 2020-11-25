@@ -2,6 +2,6 @@
 
 . /opt/ros/foxy/setup.sh
 
-ros2-web-bridge/bin/rosbridge.js &
+/opt/ros2-web-bridge/bin/rosbridge.js &
 
 exec "${@}"

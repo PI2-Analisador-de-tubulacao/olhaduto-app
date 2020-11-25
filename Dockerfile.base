@@ -18,9 +18,8 @@ RUN apt update -y \
     && apt clean \
     && rm -rf /var/lib/apt/lists/* \
     \
-    && su -l olhaduto \
-    && git clone https://github.com/PI2-Analisador-de-tubulacao/ros2-web-bridge \
-    && cd ros2-web-bridge \
+    && git clone https://github.com/PI2-Analisador-de-tubulacao/ros2-web-bridge /opt/ros2-web-bridge \
+    && cd /opt/ros2-web-bridge \
     && . /opt/ros/foxy/setup.sh \
     && yarn
 
