@@ -5,4 +5,4 @@ services:
     image: olhaduto_base
     volumes:
       - .:/home/olhaduto/
-    command: /bin/bash -l -c "yarn && yarn dev"
+    command: /bin/bash -l -c "yarn --network-timeout 1000000000 && yarn dev"
