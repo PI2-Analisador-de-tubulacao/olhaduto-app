@@ -3,9 +3,9 @@ import ROSLIB from 'roslib';
 import './Prediction.css';
 import * as tf from '@tensorflow/tfjs';
 import { loadGraphModel } from '@tensorflow/tfjs-converter';
-import { Button, Dialog } from '@material-ui/core';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Button } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const IMG_WIDTH = 448;
 const IMG_HEIGHT = 448;
@@ -15,44 +15,72 @@ class Prediction extends React.Component {
     super(props);
     this.ros = new ROSLIB.Ros({ encoding: 'ascii' });
     this.ros.connect('ws://localhost:9090');
-
-    const node = new ROSLIB.Topic({
-      ros: this.ros,
-      name: '/image/image_raw',
-      messageType: 'sensor_msgs/Image',
-    });
+    this.canvasStream = document.createElement('canvas');
+    this.ctxStream = this.canvasStream.getContext('2d');
 
     this.state = {
-      image: 'http://placehold.it/180',
       imageToPredict: null,
       isModalOpen: false,
-      node,
+      imageTopic: new ROSLIB.Topic({
+        ros: this.ros,
+        name: '/image/image_raw',
+        messageType: 'sensor_msgs/Image',
+      }),
+      pressureTopic: new ROSLIB.Topic({
+        ros: this.ros,
+        name: '/environment/pressure',
+        messageType: 'sensor_msgs/FluidPressure',
+      }),
+      temperatureTopic: new ROSLIB.Topic({
+        ros: this.ros,
+        name: '/environment/temperature',
+        messageType: 'sensor_msgs/Temperature',
+      }),
+      coordinatesTopic: new ROSLIB.Topic({
+        ros: this.ros,
+        name: '/coordinates',
+        messageType: 'geometry_msgs/Pose2D',
+      }),
+      coordinates: {},
     };
   }
 
   componentDidMount = async () => {
-    const { node } = this.state;
+    const {
+      imageTopic,
+      pressureTopic,
+      temperatureTopic,
+      coordinatesTopic,
+    } = this.state;
     const cracksSegModel = await loadGraphModel(
       '../resources/unet_js/model.json'
     );
-    node.subscribe((message) => {
+    this.setState({ model: cracksSegModel });
+    imageTopic.subscribe((message) => {
       this.streamVideo(message.data, message.height, message.width);
     });
-    this.setState({ model: cracksSegModel });
+    pressureTopic.subscribe((message) => {
+      this.setState({ fluidPressure: message.fluid_pressure });
+    });
+    temperatureTopic.subscribe((message) => {
+      this.setState({ temperature: message.temperature });
+    });
+    coordinatesTopic.subscribe((message) => {
+      this.setState({
+        coordinates: { x: message.x, y: message.y, theta: message.theta },
+      });
+    });
   };
 
-  handleClose = () => {
-    this.setState({ isModalOpen: false });
-  };
+  componentWillUnmount() {
+    delete this.canvasStream;
+  }
 
   streamVideo = (array, imgHeight, imgWidth) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    this.canvasStream.width = imgWidth;
+    this.canvasStream.height = imgHeight;
 
-    canvas.width = imgWidth;
-    canvas.height = imgHeight;
-
-    const imgData = ctx.getImageData(0, 0, imgWidth, imgHeight);
+    const imgData = this.ctxStream.getImageData(0, 0, imgWidth, imgHeight);
 
     let ix = 0;
     for (let i = 0; i < imgHeight * imgWidth * 3; i += 3) {
@@ -62,11 +90,11 @@ class Prediction extends React.Component {
       imgData.data[ix + 3] = 255;
       ix += 4;
     }
-    ctx.putImageData(imgData, 0, 0);
+    this.ctxStream.putImageData(imgData, 0, 0);
 
     const image = document.getElementById('crack_image');
 
-    image.src = canvas.toDataURL();
+    image.src = this.canvasStream.toDataURL();
     image.height = imgHeight;
     image.width = imgWidth;
   };
@@ -152,41 +180,63 @@ class Prediction extends React.Component {
   };
 
   render() {
-    const { image, isModalOpen, imageToPredict } = this.state;
+    const {
+      isModalOpen,
+      imageToPredict,
+      fluidPressure,
+      temperature,
+      coordinates,
+    } = this.state;
     return (
       <div
         id="imageDiv"
         style={{
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
           flexBasis: '80%',
+          alignItems: 'center',
+          flexDirection: 'column',
           justifyContent: 'space-around',
         }}
       >
-        <div id="images" style={{ position: 'relative' }}>
-          <img
-            style={{ maxWidth: '500px' }}
-            id="crack_image"
-            src={image}
-            alt="uploaded"
+        <div id="images" style={{ display: 'flex', flexDirection: 'row' }}>
+          <img id="crack_image" src="http://placehold.it/180" alt="uploaded" />
+          <div id="predictionArea" style={{ position: 'relative' }}>
+            <img src={imageToPredict} alt="selected" />
+          </div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <TextField
+            label="Temperatura"
+            defaultValue=""
+            value={temperature}
+            variant="outlined"
+            size="small"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              readOnly: true,
+              endAdornment: <InputAdornment position="end">°C</InputAdornment>,
+            }}
+          />
+          <TextField
+            label="Pressão"
+            defaultValue=""
+            value={fluidPressure}
+            variant="outlined"
+            size="small"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              readOnly: true,
+              endAdornment: <InputAdornment position="end">°C</InputAdornment>,
+            }}
           />
         </div>
         <Button variant="contained" color="primary" onClick={this.predict}>
           Predizer Falha
         </Button>
-        <Dialog
-          open={isModalOpen}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Predição</DialogTitle>
-          <DialogContent>
-            <div id="predictionArea" style={{ position: 'relative' }}>
-              <img src={imageToPredict} alt="selected" />
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
     );
   }
