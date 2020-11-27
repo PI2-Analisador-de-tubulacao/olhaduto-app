@@ -11,6 +11,7 @@ import { NavButtonDiv, NavLabelDiv, NavButtonWrapper } from './styles';
 type Props = {
   name: string;
   buttonRadius: number;
+  topicName: string;
 };
 
 class NavigationButton extends Component {
@@ -29,7 +30,7 @@ class NavigationButton extends Component {
       },
       movementTopic: new ROSLIB.Topic({
         ros: this.ros,
-        name: '/commands/move',
+        name: props.topicName,
         messageType: 'geometry_msgs/Vector3',
       }),
     };
@@ -145,11 +146,13 @@ class NavigationButton extends Component {
 NavigationButton.propTypes = {
   name: PropTypes.string,
   buttonRadius: PropTypes.number,
+  topicName: PropTypes.string,
 };
 
 NavigationButton.defaultProps = {
   name: '',
   buttonRadius: 220,
+  topicName: '',
 };
 
 export default NavigationButton;

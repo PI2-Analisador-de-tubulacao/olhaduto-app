@@ -5,8 +5,9 @@ import ControlPageWrapper from './styles';
 import routes from '../constants/routes.json';
 import Prediction from '../components/control/Prediction';
 import Logo from '../../resources/images/olha_duto_logo.svg';
-import NavigationButton from '../components/control/ButtonNavigation';
+import NavigationButton from '../components/control/NavigationButton';
 import BrightnessButton from '../components/control/BrightnessButton';
+import CameraHeightButton from '../components/control/CameraHeightButton';
 
 export default function ControlPage() {
   return (
@@ -17,7 +18,7 @@ export default function ControlPage() {
       <div
         style={{
           display: 'flex',
-          flexBasis: '80%',
+          flexBasis: '70%',
           justifyContent: 'space-around',
         }}
       >
@@ -25,14 +26,32 @@ export default function ControlPage() {
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            flexBasis: '20%',
+            flexBasis: '30%',
           }}
         >
-          <NavigationButton name="CÂMERA" buttonRadius={140} />
-          <NavigationButton name="PLATAFORMA" buttonRadius={140} />
+          <CameraHeightButton />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginLeft: '16px',
+            }}
+          >
+            <NavigationButton
+              name="PLATAFORMA"
+              buttonRadius={140}
+              topicName="/commands/move"
+            />
+            <NavigationButton
+              name="CÂMERA"
+              buttonRadius={140}
+              topicName="/commands/camera/rotation"
+            />
+          </div>
         </div>
       </div>
       <div
