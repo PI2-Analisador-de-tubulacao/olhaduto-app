@@ -5,7 +5,7 @@ import ControlPageWrapper from './styles';
 import routes from '../constants/routes.json';
 import Prediction from '../components/control/Prediction';
 import Logo from '../../resources/images/olha_duto_logo.svg';
-import NavigationButton from '../components/control/ButtonNavigation';
+import NavigationButton from '../components/control/NavigationButton';
 import BrightnessButton from '../components/control/BrightnessButton';
 
 export default function ControlPage() {
@@ -31,8 +31,16 @@ export default function ControlPage() {
             flexBasis: '20%',
           }}
         >
-          <NavigationButton name="CÂMERA" buttonRadius={140} />
-          <NavigationButton name="PLATAFORMA" buttonRadius={140} />
+          <NavigationButton
+            name="PLATAFORMA"
+            buttonRadius={140}
+            topicName="/commands/move"
+          />
+          <NavigationButton
+            name="CÂMERA"
+            buttonRadius={140}
+            topicName="/commands/camera/rotation"
+          />
         </div>
       </div>
       <div
