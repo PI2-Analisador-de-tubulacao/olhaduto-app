@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import ControlPageWrapper from './styles';
 import routes from '../constants/routes.json';
 import Prediction from '../components/control/Prediction';
-import Logo from '../../resources/images/olha_duto_logo.svg';
+import Logo from '../../resources/images/olha_duto_logo.png';
 import NavigationButton from '../components/control/NavigationButton';
 import BrightnessButton from '../components/control/BrightnessButton';
 import CameraHeightButton from '../components/control/CameraHeightButton';
@@ -13,7 +13,12 @@ export default function ControlPage() {
   return (
     <ControlPageWrapper>
       <div style={{ flexBasis: '10%' }}>
-        <img width="180px" src={Logo} alt="logo-icon" />
+        <img
+          width="180px"
+          src={Logo}
+          style={{ padding: '8px' }}
+          alt="logo-icon"
+        />
       </div>
       <div
         style={{

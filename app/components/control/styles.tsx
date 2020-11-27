@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
 
 export const NavButtonWrapper = styled.div`
   height: auto;
@@ -23,3 +25,9 @@ export const NavLabelDiv = styled.div`
   border-radius: 20px;
   margin-bottom: 12px;
 `;
+
+export const DisplayField = withStyles({
+  root: {
+    width: '110px',
+  },
+})(TextField);

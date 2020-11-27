@@ -4,8 +4,8 @@ import './Prediction.css';
 import * as tf from '@tensorflow/tfjs';
 import { loadGraphModel } from '@tensorflow/tfjs-converter';
 import { Button } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { DisplayField } from './styles';
 
 const IMG_WIDTH = 448;
 const IMG_HEIGHT = 448;
@@ -20,7 +20,6 @@ class Prediction extends React.Component {
 
     this.state = {
       imageToPredict: null,
-      isModalOpen: false,
       imageTopic: new ROSLIB.Topic({
         ros: this.ros,
         name: '/image/image_raw',
@@ -143,7 +142,7 @@ class Prediction extends React.Component {
   preprocessImage = async () => {
     const myImage = document.getElementById('crack_image');
 
-    this.setState({ isModalOpen: true, imageToPredict: myImage.src });
+    this.setState({ imageToPredict: myImage.src });
 
     const data = tf.browser.fromPixels(myImage);
     let tensor = tf.image.resizeBilinear(data, [448, 448]); // 192,192
@@ -181,11 +180,10 @@ class Prediction extends React.Component {
 
   render() {
     const {
-      isModalOpen,
-      imageToPredict,
-      fluidPressure,
       temperature,
       coordinates,
+      fluidPressure,
+      imageToPredict,
     } = this.state;
     return (
       <div
@@ -204,8 +202,15 @@ class Prediction extends React.Component {
             <img src={imageToPredict} alt="selected" />
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <TextField
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            width: '80%',
+          }}
+        >
+          <DisplayField
             label="Temperatura"
             defaultValue=""
             value={temperature}
@@ -219,7 +224,7 @@ class Prediction extends React.Component {
               endAdornment: <InputAdornment position="end">°C</InputAdornment>,
             }}
           />
-          <TextField
+          <DisplayField
             label="Pressão"
             defaultValue=""
             value={fluidPressure}
@@ -230,7 +235,46 @@ class Prediction extends React.Component {
             }}
             InputProps={{
               readOnly: true,
-              endAdornment: <InputAdornment position="end">°C</InputAdornment>,
+              endAdornment: <InputAdornment position="end">Pa</InputAdornment>,
+            }}
+          />
+          <DisplayField
+            label="X"
+            defaultValue=""
+            value={coordinates.x}
+            variant="outlined"
+            size="small"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <DisplayField
+            label="Y"
+            defaultValue=""
+            value={coordinates.y}
+            variant="outlined"
+            size="small"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <DisplayField
+            label="Theta"
+            defaultValue=""
+            value={coordinates.theta && coordinates.theta.toFixed(2)}
+            variant="outlined"
+            size="small"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              readOnly: true,
             }}
           />
         </div>
